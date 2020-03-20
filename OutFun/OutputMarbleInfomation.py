@@ -8,6 +8,7 @@ import cv2
 import numpy as np
 import threading
 import random
+import networkx
 from OutFun.MarbleInfomation import MarbleInfomation
 
 
@@ -46,6 +47,7 @@ class OutputInfo(threading.Thread):
         self.callBackFun(True, False, 7)
 
         self.disBlockCentroidImage()
+        self.connectGraph()
         self.callBackFun(True, False, 8)
 
     def disContactsImageLine(self):
@@ -63,7 +65,7 @@ class OutputInfo(threading.Thread):
         显示点连接图
         """
         temp = np.copy(self.marbleinformation.image)
-        for x, y, dis in self.contactsPoints:
+        for x, y, dis, _ , _ in self.contactsPoints:
             cv2.circle(temp, (x, y), dis, [0, 0, 255], thickness=-1)
 
         self.marbleinformation.contactsImageDot = np.copy(temp)
@@ -76,7 +78,7 @@ class OutputInfo(threading.Thread):
         size = self.marbleinformation.image.shape
         rect = (0, 0, size[1], size[0])
         subdiv = cv2.Subdiv2D(rect)
-        for x, y, _ in self.contactsPoints:
+        for x, y, _, _, _ in self.contactsPoints:
             subdiv.insert((x, y))
 
         (facets, centers) = subdiv.getVoronoiFacetList([])
@@ -179,7 +181,7 @@ class OutputInfo(threading.Thread):
                 continue
             else:
                 self.contactsBlockInfo.append([index1, index2])
-                self.contactsPoints.append([x, y, dis])
+                self.contactsPoints.append([x, y, dis,index1,index2])
                 count = count + 1
 
         self.marbleinformation.contactsNum = count
@@ -218,6 +220,42 @@ class OutputInfo(threading.Thread):
         self.marbleinformation.blockNum = len(self.marbleinformation.blocksSize)  # 石块总数
         self.marbleinformation.contactsMarbleSize = contactsallSize  # 有接触石块面积
         self.marbleinformation.noneContactsMarbleSize = allBlockSize - contactsallSize  # 无接触石块面积
+
+    def connectGraph(self):
+        connectImage = np.copy(self.marbleinformation.blockImage)
+        G = networkx.Graph()
+        edges = []
+        for x, y, dis, index1 , index2 in self.contactsPoints:
+            edges.append((index1,index2,1))
+
+        G.add_weighted_edges_from(edges)
+
+        G = networkx.minimum_spanning_tree(G, algorithm='kruskal')
+
+        for index1, index2, _ in G.edges(data=True):
+            contour1 = self.marbleinformation.contourInfo[index1 - 1]
+            M = cv2.moments(contour1)  # 求矩
+            point1 = (int(M['m10'] / M['m00']), int(M['m01'] / M['m00']))
+
+            contour1 = self.marbleinformation.contourInfo[index2 - 1]
+            M = cv2.moments(contour1)  # 求矩
+            point2 = (int(M['m10'] / M['m00']), int(M['m01'] / M['m00']))
+
+            cv2.line(connectImage, point1, point2, [0, 0, 255], thickness=2)
+
+        self.marbleinformation.miniConnectTree = np.copy(connectImage)
+
+
+
+
+
+
+
+
+
+
+
+
 
     def rect_contains(self, rect, point):
         if point[0] < rect[0]:

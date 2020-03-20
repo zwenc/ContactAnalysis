@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 
 
 class imageCalcContacts(threading.Thread):
-    def __init__(self, image, maxArea, blocksize, callBackFun):
+    def __init__(self, image, maxArea, blocksize, callBackFun, marbleinformation):
         threading.Thread.__init__(self)
 
         self.image = np.copy(image)
@@ -21,6 +21,7 @@ class imageCalcContacts(threading.Thread):
         self.ContactPointInfo = []
         self.blocksSize = []
         self.blocksize = blocksize
+        self.marbleinformation = marbleinformation
 
         self.start()
 
@@ -129,6 +130,7 @@ class imageCalcContacts(threading.Thread):
 
         contourslen = len(contours)
         self.blockNum = contourslen
+        self.marbleinformation.contourInfo = contours
         # 暴力计算距离
         for contourIndex, contrs in enumerate(contours):
             if cv2.contourArea(contrs) < self.blocksize:

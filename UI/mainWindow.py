@@ -268,7 +268,8 @@ class mainw(QMainWindow, Ui_MainWindow):
 
         if okPressed == False:
             return
-        self.calcContactsProcess = imageCalcContacts(self.currentImage, rsize, int(blocksize/self.imageSizeCoef), self.CalcContactsCallBack)
+        self.calcContactsProcess = imageCalcContacts(self.currentImage, rsize, int(blocksize/self.imageSizeCoef), self.CalcContactsCallBack
+                                                     ,self.MarbleInfo)
 
     def CalcContactsCallBack(self, ret, state, count):
         self.calcContactsSignal.emit(ret, state, count)
@@ -382,6 +383,8 @@ class mainw(QMainWindow, Ui_MainWindow):
             plt.figure("质心图连接图")
             plt.imshow(self.MarbleInfo.blockCentroidImage[:, :, [2, 1, 0]])
             cv2.imwrite("OutDir/blockCentroidImage.jpg", self.MarbleInfo.blockCentroidImage)
+
+            cv2.imwrite("OutDir/miniConnectTreeImage.jpg", self.MarbleInfo.miniConnectTree)
             return
 
 

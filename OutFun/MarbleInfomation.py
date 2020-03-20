@@ -27,6 +27,7 @@ class MarbleInfomation():
         self.contactsVoronoiImage = None   # 接触点Voronoi图                  最后弄
         self.CentroidImage = None
         self.blockCentroidImage = None     # 石块形心连接图                    最后弄
+        self.miniConnectTree = None
 
         self.blockNum = 0             # 石块总数                              完成
         self.ContactPointInfo = []    # 接触点位置  计算接触点数量              完成
@@ -35,6 +36,8 @@ class MarbleInfomation():
         self.blockImage = None        # 石块图（无最外层边框的那种，用来计算形心）      完成
         self.imageSizeCoef = 1        # 像素与真实值面积比例                          完成
         self.image = None
+
+        self.contourInfo = None
 
 
 if __name__ == "__main__":

@@ -32,6 +32,7 @@ class imageROuterArea(threading.Thread):
         # 判断轮廓数量
         if len(contours) <= 1:
             self.outImage = self.image
+            self.maxAreaSize = cv2.contourArea(contours[0])
             self.callback(True, True, 100)
             return
 
