@@ -64,6 +64,7 @@ class mainw(QMainWindow, Ui_MainWindow):
         self.outputParmSignal.connect(self.OutputSParmDisplay)
 
         self.pushButtonBackOne.setEnabled(False)
+        self.pushButtonCanny.setHidden(True)
 
         # 初始化变量
         self.image = None  # 原始图片
@@ -73,6 +74,9 @@ class mainw(QMainWindow, Ui_MainWindow):
         self.imageSizeCoef = 1
         self.MarbleInfo = MarbleInfomation()
         self.lineCoef = 1.0
+
+        with open("./UI/ui.css", "r") as css_file:
+            self.setStyleSheet(css_file.read())
 
     def pushButtonLoadimage(self):
         fileName, fileType = QFileDialog.getOpenFileName(self, "选取文件", os.getcwd(),
