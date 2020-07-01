@@ -9,7 +9,12 @@ import threading
 import numpy as np
 
 class imageWatershed(threading.Thread):
-    def __init__(self, image, Oimage,callBackFun):
+    def __init__(self, image, Oimage, callBackFun):
+        """
+        image:  已经经过二值化并且去噪的图像
+        Oimage: 原始图像
+        callBackFun: 回调函数（你不用管它）
+        """
         threading.Thread.__init__(self)
 
         self.image = np.copy(image)

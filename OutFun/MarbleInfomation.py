@@ -16,18 +16,21 @@ class MarbleInfomation():
     def __init__(self):
         self.blockDiam = []                # 石料面积                        完成
         self.contactsNum = 0               # 接触点数量（每两个石块之间只算一次接触）  完成
-        self.averageMatches = 0            # 平均匹配数  接触点数量/总石块数量        预完成
+        self.averageMatches = 0            # 平均匹配数  接触点数量/总石块数量        完成
         self.MarbleSize = 0                # 石块总面积                        完成
         self.contactsMarbleSize = 0        # 有接触石块面积                     完成
         self.noneContactsMarbleSize = 0    # 无接触石块面积                     完成
-        self.parameterA = 0                # 接触石料的总面积/石块总面积         预完成
-        self.parameterB = 0                # 无接触石料的总面积/石块总面积       预完成
-        self.contactsImageLine = None      # 接触图（线连接图）                 预完成
-        self.contactsImageDot = None       # 接触图（点连接图）                有了
-        self.contactsVoronoiImage = None   # 接触点Voronoi图                  最后弄
-        self.CentroidImage = None
-        self.blockCentroidImage = None     # 石块形心连接图                    最后弄
-        self.miniConnectTree = None
+        self.parameterA = 0                # 接触石料的总面积/石块总面积         完成
+        self.parameterB = 0                # 无接触石料的总面积/石块总面积       完成
+        self.contactsImageLine = None      # 接触图（线连接图）                 完成
+        self.contactsImageLineBlock = None # 接触图（线连接图，二值化图）
+        self.contactsImageDot = None       # 接触图（点连接图）                完成
+        self.contactsImageDotBlock = None  # 接触图（点连接图，二值化图）
+        self.contactsVoronoiImage = None   # 接触点Voronoi图                  完成
+        self.CentroidImage = None          # 完成
+        self.blockCentroidImage = None     # 石块形心连接图                    完成
+        self.miniConnectTree = None         #  完成
+        self.miniConnectTreeRealImate = None  # 完成
 
         self.blockNum = 0             # 石块总数                              完成
         self.ContactPointInfo = []    # 接触点位置  计算接触点数量              完成
@@ -37,7 +40,8 @@ class MarbleInfomation():
         self.imageSizeCoef = 1        # 像素与真实值面积比例                          完成
         self.image = None
 
-        self.contourInfo = None
+        self.contourInfo = None # 完成
+
 
 
 if __name__ == "__main__":

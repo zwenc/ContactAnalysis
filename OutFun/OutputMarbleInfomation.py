@@ -60,6 +60,12 @@ class OutputInfo(threading.Thread):
 
         self.marbleinformation.contactsImageLine = np.copy(temp)
 
+        temp = np.copy(self.marbleinformation.blockImage)
+        for x, y, dis, index1, index2 in self.marbleinformation.ContactPointInfo:
+            cv2.circle(temp, (x, y), dis, [0, 0, 255], thickness=-1)
+        self.marbleinformation.contactsImageLineBlock = np.copy(temp)
+
+
     def disContactsImageDot(self):
         """
         显示点连接图
@@ -69,6 +75,12 @@ class OutputInfo(threading.Thread):
             cv2.circle(temp, (x, y), dis, [0, 0, 255], thickness=-1)
 
         self.marbleinformation.contactsImageDot = np.copy(temp)
+
+        temp = np.copy(self.marbleinformation.blockImage)
+        for x, y, dis, _, _ in self.contactsPoints:
+            cv2.circle(temp, (x, y), dis, [0, 0, 255], thickness=-1)
+
+        self.marbleinformation.contactsImageDotBlock = np.copy(temp)
 
     def disVoronoiImage(self):
         """
@@ -153,7 +165,7 @@ class OutputInfo(threading.Thread):
         outFile = open("OutDir/Marbleinfor.txt", mode="w+")
         outFile.write("接触点数量：" + str(self.marbleinformation.contactsNum) + "\n")
         outFile.write(
-            "平均匹配数: " + str(round(self.marbleinformation.contactsNum / self.marbleinformation.blockNum, 2)) + "\n")
+            "平均配位数: " + str(round(self.marbleinformation.contactsNum / self.marbleinformation.blockNum, 2)) + "\n")
         outFile.write(
             "石块总面积: " + str(
                 round(self.marbleinformation.MarbleSize * self.marbleinformation.imageSizeCoef, 2)) + " mm2 \n")
@@ -222,7 +234,11 @@ class OutputInfo(threading.Thread):
         self.marbleinformation.noneContactsMarbleSize = allBlockSize - contactsallSize  # 无接触石块面积
 
     def connectGraph(self):
+        """
+        生成连通图
+        """
         connectImage = np.copy(self.marbleinformation.blockImage)
+        connectImageReal = np.copy(self.marbleinformation.image)
         G = networkx.Graph()
         edges = []
         for x, y, dis, index1 , index2 in self.contactsPoints:
@@ -242,20 +258,14 @@ class OutputInfo(threading.Thread):
             point2 = (int(M['m10'] / M['m00']), int(M['m01'] / M['m00']))
 
             cv2.line(connectImage, point1, point2, [0, 0, 255], thickness=2)
+            cv2.line(connectImageReal, point1, point2, [0, 0, 255], thickness=2)
+            cv2.circle(connectImage, point1, 4, [0, 255, 0] ,thickness = -1)
+            cv2.circle(connectImage, point2, 4, [0, 255, 0], thickness=-1)
+            cv2.circle(connectImageReal, point1, 4, [0, 255, 0], thickness=-1)
+            cv2.circle(connectImageReal, point2, 4, [0, 255, 0], thickness=-1)
 
         self.marbleinformation.miniConnectTree = np.copy(connectImage)
-
-
-
-
-
-
-
-
-
-
-
-
+        self.marbleinformation.miniConnectTreeRealImate = np.copy(connectImageReal)
 
     def rect_contains(self, rect, point):
         if point[0] < rect[0]:

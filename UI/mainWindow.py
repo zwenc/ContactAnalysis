@@ -362,6 +362,7 @@ class mainw(QMainWindow, Ui_MainWindow):
             plt.figure("线连接图")
             plt.imshow(self.MarbleInfo.contactsImageLine[:, :, [2, 1, 0]])
             cv2.imwrite("OutDir/contactsImageLine.jpg", self.MarbleInfo.contactsImageLine)
+            cv2.imwrite("OutDir/contactsImageLineBlock.jpg", self.MarbleInfo.contactsImageLineBlock)
             return
 
         if count == 6:
@@ -369,6 +370,7 @@ class mainw(QMainWindow, Ui_MainWindow):
             plt.figure("点连接图")
             plt.imshow(self.MarbleInfo.contactsImageDot[:, :, [2, 1, 0]])
             cv2.imwrite("OutDir/contactsImageDot.jpg", self.MarbleInfo.contactsImageDot)
+            cv2.imwrite("OutDir/contactsImageDotBlock.jpg", self.MarbleInfo.contactsImageDotBlock)
             return
 
         if count == 7:
@@ -389,6 +391,7 @@ class mainw(QMainWindow, Ui_MainWindow):
             cv2.imwrite("OutDir/blockCentroidImage.jpg", self.MarbleInfo.blockCentroidImage)
 
             cv2.imwrite("OutDir/miniConnectTreeImage.jpg", self.MarbleInfo.miniConnectTree)
+            cv2.imwrite("OutDir/miniConnectTreeImageReal.jpg", self.MarbleInfo.miniConnectTreeRealImate)
             return
 
 
