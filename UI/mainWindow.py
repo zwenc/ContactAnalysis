@@ -81,10 +81,10 @@ class mainw(QMainWindow, Ui_MainWindow):
     def pushButtonLoadimage(self):
         fileName, fileType = QFileDialog.getOpenFileName(self, "选取文件", os.getcwd(),
                                                          "All Files(*);;Text Files(*.txt)")
-        self.imageRealSize[0], okPressed = QInputDialog.getInt(self, "物理尺寸", "高度（单位：mm）:", 150, 50, 500, 1)
+        self.imageRealSize[0], okPressed = QInputDialog.getDouble(self, "物理尺寸", "高度（单位：mm）:", 101.6, 10, 5000, 1)
         if okPressed == False:
             return
-        self.imageRealSize[1], okPressed = QInputDialog.getInt(self, "物理尺寸", "宽度（单位：mm）:", 150, 50, 500, 1)
+        self.imageRealSize[1], okPressed = QInputDialog.getDouble(self, "物理尺寸", "宽度（单位：mm）:", 101.6, 10, 5000, 1)
         if okPressed == False:
             return
 
@@ -263,8 +263,8 @@ class mainw(QMainWindow, Ui_MainWindow):
         self.MarbleInfo.blockImage = np.copy(self.displayImage)
         # plt.imshow(self.currentImage[:,:,[2,1,0]])
         #         # plt.pause(1)
-        defaultsize = float(self.lineCoef * 5.0)
-        size, okPressed = QInputDialog.getDouble(self, "接触半径", "接触半径（单位：mm）:", defaultsize, 1, 200, decimals=3)
+        # defaultsize = float(self.lineCoef * 5.0)
+        size, okPressed = QInputDialog.getDouble(self, "接触半径", "接触半径（单位：mm）:", 0.543, 0.0001, 200, decimals=3)
         if okPressed == False:
             return
         rsize = int(size / self.lineCoef)
@@ -299,7 +299,7 @@ class mainw(QMainWindow, Ui_MainWindow):
 
     def pushButtonRSmallArea(self):
         self.currentImage = np.copy(self.displayImage)
-        size, okPressed = QInputDialog.getDouble(self, "移除石块的最大值", "数值（单位：mm）:", 4.37, 1, 200, decimals=2)
+        size, okPressed = QInputDialog.getDouble(self, "移除石块的最大值", "数值（单位：mm2）:", 4.37, 1, 200, decimals=2)
         size = int(size / self.imageSizeCoef)
         self.removeSmallAreaProcess = imageRSmallArea(self.currentImage, size, self.RSmallAreaCallback)
 
